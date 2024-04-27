@@ -1,0 +1,23 @@
+# Ignore .env file
+.env
+
+# Ignore database files
+db.sqlite3
+*.sqlite3
+
+# Ignore compiled Python files
+*.pyc
+
+# Ignore settings file (if different from the default 'settings.py')
+*/settings.py
+
+# Ignore logs and other generated files
+logs/
+*.log
+
+# Ignore media and static files (if managed outside of version control)
+media/
+static/
+
+# Ignore virtual environment
+venv/

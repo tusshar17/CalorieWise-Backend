@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    command: ["sh", "./django.sh"]
+    volumes:
+      - ./app/:/usr/src/app/
+    env_file:
+      - .env
+    depends_on:
+      - postgres_db
+
+  postgres_db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER = ${PG_USER}
+      - POSTGRES_PASSWORD = ${PG_PASSWORD}
+      - POSTGRES_DB = ${DB_NAME}
+      - PGPORT = ${PG_PORT}
+      - PGHOST = ${HOST}
+
+volumes:
+  postgres_data:

@@ -1,0 +1,115 @@
+{
+    id:
+    user:
+    date:
+    meals: [
+        {
+            meal_name:
+            food_items:[
+                {
+                    id: ,
+                    is_custom: ,
+                    is_searched: ,
+                    name: ,
+                    serving_size_in_g: ,
+                    calories: ,
+                    protein_in_g: ,
+                    carbs_in_g: ,
+                    fats_in_g: ,
+                    sugar_in_g: ,
+                    qty_used_in_g: ,
+                }
+            ]
+            calories:
+            proein:
+            carbs:
+            sugar:
+        }
+    ]
+
+    calories:
+    proein:
+    carbs:
+    fats:
+    sugar:
+}
+
+
+------------- Example ----------------------------
+
+
+{
+    "meals": [
+        {
+            "meal_name": "breakfast",
+            "food_items": [
+                {
+                    "id": 1,
+                    "is_custom": "True",
+                    "is_searched": "False",
+                    "name": "demo food item",
+                    "serving_size_in_g": 100,
+                    "calories": 100,
+                    "protein_in_g": 10,
+                    "carbs_in_g": 10,
+                    "fats_in_g": 10,
+                    "sugar_in_g": 10,
+                    "qty_used_in_g": 200
+                },
+                {
+                    "id": 1,
+                    "is_custom": "True",
+                    "is_searched": "False",
+                    "name": "demo food item",
+                    "serving_size_in_g": 100,
+                    "calories": 100,
+                    "protein_in_g": 10,
+                    "carbs_in_g": 10,
+                    "fats_in_g": 10,
+                    "sugar_in_g": 10,
+                    "qty_used_in_g": 200
+                }
+            ]
+        },
+        {
+            "meal_name": "lunch",
+            "food_items": [
+                {
+                    "id": 1,
+                    "is_custom": "True",
+                    "is_searched": "False",
+                    "name": "demo food item",
+                    "serving_size_in_g": 100,
+                    "calories": 100,
+                    "protein_in_g": 10,
+                    "carbs_in_g": 10,
+                    "fats_in_g": 10,
+                    "sugar_in_g": 10,
+                    "qty_used_in_g": 200
+                },
+                {
+                    "id": 1,
+                    "is_custom": "True",
+                    "is_searched": "False",
+                    "name": "demo food item",
+                    "serving_size_in_g": 100,
+                    "calories": 100,
+                    "protein_in_g": 10,
+                    "carbs_in_g": 10,
+                    "fats_in_g": 10,
+                    "sugar_in_g": 10,
+                    "qty_used_in_g": 200
+                }
+            ]
+        }
+    ]
+}
+
+
+
+
+
+
+
+===============================================================
+{"meals": [{"meal_name": "pre-workout", "food_items": [{"id": 1, "name": "demo food item", "calories": 100, "fats_in_g": 10, "is_custom": "True", "carbs_in_g": 10, "sugar_in_g": 10, "is_searched": "False", "protein_in_g": 10, "qty_used_in_g": 200, "serving_size_in_g": 100}, {"id": 1, "name": "demo food item", "calories": 100, "fats_in_g": 10, "is_custom": "True", "carbs_in_g": 10, "sugar_in_g": 10, "is_searched": "False", "protein_in_g": 10, "qty_used_in_g": 200, "serving_size_in_g": 100}], "meal_macros": {"calories": 400.0, "fats_in_g": 40.0, "carbs_in_g": 40.0, "sugar_in_g": 40.0, "protein_in_g": 40.0}}, {"meal_name": "post-workout", "food_items": [{"id": 1, "name": "demo food item", "calories": 100, "fats_in_g": 10, "is_custom": "True", "carbs_in_g": 10, "sugar_in_g": 10, "is_searched": "False", "protein_in_g": 10, "qty_used_in_g": 200, "serving_size_in_g": 100}, {"id": 1, "name": "demo food item", "calories": 100, "fats_in_g": 10, "is_custom": "True", "carbs_in_g": 10, "sugar_in_g": 10, "is_searched": "False", "protein_in_g": 10, "qty_used_in_g": 200, "serving_size_in_g": 100}], "meal_macros": {"calories": 400.0, "fats_in_g": 40.0, "carbs_in_g": 40.0, "sugar_in_g": 40.0, "protein_in_g": 40.0}}]}	
