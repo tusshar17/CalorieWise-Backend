@@ -1,29 +1,27 @@
 version: "3.8"
 
 services:
-  web:
-    build:
-      context: .
-    ports:
-      - "8000:8000"
-    command: ["sh", "./django.sh"]
-    volumes:
-      - ./app/:/usr/src/app/
-    env_file:
-      - .env
-    depends_on:
-      - postgres_db
-
-  postgres_db:
-    image: postgres:15
+  db:
+    container_name: db
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${PG_DB}
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER = ${PG_USER}
-      - POSTGRES_PASSWORD = ${PG_PASSWORD}
-      - POSTGRES_DB = ${DB_NAME}
-      - PGPORT = ${PG_PORT}
-      - PGHOST = ${HOST}
+
+  web:
+    container_name: djangoapp
+    build: .
+    env_file: .env
+    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
 
 volumes:
-  postgres_data:
+  postgres_data: {}

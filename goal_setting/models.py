@@ -5,7 +5,7 @@ from account.models import User
 class Goal(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
     age = models.IntegerField()
-    gender = models.CharField(max_length=1)
+    gender = models.CharField(max_length=10)
     height_in_inches = models.IntegerField()
     starting_weight_in_kg = models.FloatField()
     pal = models.FloatField()  # physical activity level

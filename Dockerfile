@@ -1,20 +1,22 @@
-# setting up base image
-FROM python:3.11.4-slim-bullseye
+# Use an official Python runtime as a parent image
+FROM python:3.9
 
-# prevents python buffering stdout and stderr
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# prevents python from writing .pyc files to disc
-ENV PYTHONDONTWRITEBYTECODE 1
-
-# sets up the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD instructions 
+# Set the working directory in the container
 WORKDIR /app
 
-# copy files and directories from current directory to WORKDIR
+# Install dependencies
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the Django application code into the container
 COPY . /app/
 
+# Expose the Django application port
+EXPOSE 8000
 
-# install dependencies
-RUN pip install --upgrade pip
-COPY ./requirements.txt /app/
-RUN pip install -r requirements.txt
+# Run the Django application
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
