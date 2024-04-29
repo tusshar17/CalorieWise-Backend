@@ -15,7 +15,7 @@ services:
     container_name: djangoapp
     build: .
     env_file: .env
-    command: sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: ["sh", "./django.sh"]
     volumes:
       - .:/app
     ports:
