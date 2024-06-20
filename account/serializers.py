@@ -6,6 +6,52 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from account.utils import Util
 
 
+class SendOTPSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate(self, attrs):
+        email = attrs.get("email")
+        otp = Util.generate_otp()
+        # todo
+        userInstance = User.objects.filter(email=email)
+        if userInstance.exists():
+            userInstance.otp = otp
+            userInstance.save()
+
+            # send email
+            data = {
+                "subject": "CalorieWose | OTP for SIGN UP",
+                "body": "Here is Your OTP for SIGN UP Verification \n" + str(otp),
+                "to_email": email,
+            }
+
+            Util.send_email(data)
+            print("email sent")
+
+            return attrs
+
+        raise serializers.ValidationError("User does not exist.")
+
+
+class VerifyOTPSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=255)
+    otp = serializers.IntegerField()
+
+    def validate(self, attrs):
+        email = attrs.get("email")
+        otp = attrs.get("otp")
+
+        userInstance = User.objects.filter(email=email)[0]
+        print("userinstance otp: ", userInstance.otp)
+
+        if otp == userInstance.otp:
+            userInstance.is_verified = True
+            userInstance.save()
+            return attrs
+
+        raise serializers.ValidationError("Wrong OTP.")
+
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(
         style={"input_type": "password"}, write_only=True
@@ -13,19 +59,39 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["email", "name", "password", "confirm_password", "tc"]
-        extra_kwargs = {"password": {"write_only": True}}
+        fields = ["email", "name", "password", "confirm_password"]
+        extra_kwargs = {
+            "password": {"write_only": True},
+            "is_verified": {"read_only": True},
+        }
 
     # validate password and confirm password
     def validate(self, attrs):
+        email = attrs.get("email").lower()
         password = attrs.get("password")
         confirm_password = attrs.get("confirm_password")
+
+        isEmailTaken = User.objects.filter(email=email).exists()
+        if isEmailTaken:
+            raise serializers.ValidationError("Email already registered.")
 
         if password != confirm_password:
             raise serializers.ValidationError("Passwords not matching")
         return attrs
 
     def create(self, validated_data):
+        validated_data["otp"] = Util.generate_otp()  # otp created
+        # send otp
+        data = {
+            "subject": "CalorieWose | OTP for SIGN UP",
+            "body": "Here is Your OTP for SIGN UP Verification \n"
+            + str(validated_data["otp"]),
+            "to_email": validated_data.get("email"),
+        }
+
+        Util.send_email(data)
+        print("email sent")
+        print("validated data for creating user:", validated_data)
         return User.objects.create_user(**validated_data)
 
 

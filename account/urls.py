@@ -6,9 +6,13 @@ from account.views import (
     UserChangePasswordView,
     SendPasswordResetEmailView,
     UserPasswordResetView,
+    OTPVerification,
+    SendOTP,
 )
 
 urlpatterns = [
+    path("send_otp/", SendOTP.as_view(), name="SendOTP"),
+    path("verify_otp/", OTPVerification.as_view(), name="OTPVerification"),
     path("register/", UserRegisterView.as_view(), name="UserRegister"),
     path("login/", UserLoginView.as_view(), name="UserLogin"),
     path("profile/", UserProfileView.as_view(), name="UserProfile"),

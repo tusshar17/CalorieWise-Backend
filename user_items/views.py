@@ -13,6 +13,8 @@ class FoodItemModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     renderer_classes = [UserRenderer]
 
+    # TODO : update food item
+
     def get_queryset(self):
         return FoodItem.objects.filter(user=self.request.user)
 
@@ -46,5 +48,5 @@ class RecipeModelViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return Response(
-            data={"message": "food item deleted succesfully"}, status=status.HTTP_200_OK
+            data={"message": "recipe deleted succesfully"}, status=status.HTTP_200_OK
         )

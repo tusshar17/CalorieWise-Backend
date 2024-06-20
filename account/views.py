@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from account.serializers import (
@@ -9,10 +9,15 @@ from account.serializers import (
     UserChangePasswordSerializer,
     SendPasswordResetEmailSerializer,
     UserPasswordResetSerializer,
+    VerifyOTPSerializer,
+    SendOTPSerializer,
 )
 from django.contrib.auth import authenticate
 from account.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.throttling import AnonRateThrottle
+from account.models import User
+import datetime
 
 
 # Genrate token manually
@@ -24,14 +29,54 @@ def get_token_for_user(user):
 
 class UserRegisterView(APIView):
     renderer_classes = [UserRenderer]
+    permission_classes = [permissions.AllowAny]
+    throttle_classes = [AnonRateThrottle]
 
     def post(self, request, format=None):
-        serializer = UserRegisterSerializer(data=request.data)
-        if serializer.is_valid():
+        request_data = request.data
+        serializer = UserRegisterSerializer(data=request_data)
+        if serializer.is_valid(raise_exception=True):
             user = serializer.save()
+            return Response(
+                {
+                    "msg": "Registration successful, proceed to OTP verification",
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SendOTP(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [permissions.AllowAny]
+    throttle_classes = [AnonRateThrottle]
+
+    def post(self, request):
+        serializer = SendOTPSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response({"msg": "OTP sent successfully, please check your email."})
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class OTPVerification(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [permissions.AllowAny]
+    throttle_classes = [AnonRateThrottle]
+
+    def post(self, request):
+        print("request data:", request.data)
+        serializer = VerifyOTPSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            email = serializer.data.get("email")
+            user = User.objects.filter(email=email)[0]
+            print(user)
             token = get_token_for_user(user)
             return Response(
-                {"msg": "Registration successful", "token": token},
+                {
+                    "msg": "OTP verification successful.",
+                    "token": token,
+                },
                 status=status.HTTP_201_CREATED,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -39,6 +84,8 @@ class UserRegisterView(APIView):
 
 class UserLoginView(APIView):
     renderer_classes = [UserRenderer]
+    permission_classes = [permissions.AllowAny]
+    throttle_classes = [AnonRateThrottle]
 
     def post(self, request, format=None):
         serializer = UserLogInSerializer(data=request.data)
@@ -87,6 +134,7 @@ class UserChangePasswordView(APIView):
 
 class SendPasswordResetEmailView(APIView):
     renderer_classes = [UserRenderer]
+    throttle_classes = [AnonRateThrottle]
 
     def post(self, request, format=None):
         serializer = SendPasswordResetEmailSerializer(data=request.data)
@@ -100,6 +148,7 @@ class SendPasswordResetEmailView(APIView):
 
 class UserPasswordResetView(APIView):
     renderer_classes = [UserRenderer]
+    throttle_classes = [AnonRateThrottle]
 
     def post(self, request, uid, token, format=None):
         serializer = UserPasswordResetSerializer(
