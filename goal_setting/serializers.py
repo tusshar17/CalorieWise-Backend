@@ -29,8 +29,8 @@ def calculateGoal(data):
     surplus_calories = data["weekly_goal"] * 1000
     data["goal_calories"] = maintainance_calories + surplus_calories
     data["goal_protein"] = (data["goal_calories"] * 0.3) / 4
-    data["goal_carbs"] = (data["goal_calories"] * 0.4) / 4
-    data["goal_fats"] = (data["goal_calories"] * 0.3) / 9
+    data["goal_carbs"] = (data["goal_calories"] * 0.45) / 4
+    data["goal_fats"] = (data["goal_calories"] * 0.25) / 9
     return data
 
 
