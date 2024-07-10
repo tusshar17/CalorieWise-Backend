@@ -24,7 +24,7 @@ import datetime
 def get_token_for_user(user):
     refresh = RefreshToken.for_user(user)
 
-    return {"refresh": str(refresh), "access_token": str(refresh.access_token)}
+    return {"refresh_token": str(refresh), "access_token": str(refresh.access_token)}
 
 
 class UserRegisterView(APIView):
@@ -101,8 +101,8 @@ class UserLoginView(APIView):
                 )
             else:
                 return Response(
-                    {"errors": {"non_field_errrors": ["Incorrect login credentials"]}},
-                    status=status.HTTP_404_NOT_FOUND,
+                    {"errors": {"non_field_errors": ["Incorrect login credentials"]}},
+                    status=status.HTTP_400_BAD_REQUEST,
                 )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
