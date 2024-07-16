@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework import generics, views
+from rest_framework import generics, views, viewsets
 from rest_framework.permissions import IsAuthenticated
 from .serializers import WeightRecordSerializer
 from .models import WeightRecord
@@ -9,15 +9,17 @@ from datetime import date, timedelta
 from account.renderers import UserRenderer
 
 
-# to get all the records or create a new record
-class WeightListCreate(generics.ListCreateAPIView):
+class WeightModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = WeightRecordSerializer
     renderer_classes = [UserRenderer]
 
     def get_queryset(self):
         user = self.request.user
-        return WeightRecord.objects.filter(user=user)
+        return WeightRecord.objects.filter(user=user).order_by("-created_at")
+
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         if serializer.is_valid():

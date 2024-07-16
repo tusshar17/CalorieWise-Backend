@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import MealLog
+import random
 
 
 def calculteFoodItemMacros(val, serving_size, qty_used):
@@ -16,7 +17,9 @@ def calculateTotalMacros(data):
         "day_sugar": 0,
     }
 
-    for meal in data["logs"]["meals"]:
+    for meal in data["logs"]:
+        print(meal)
+        meal["meal_id"] = meal["meal_name"].split(" ")[0] + str(random.randint(10, 99))
         meal_macros = {
             "calories": 0,
             "protein_in_g": 0,
@@ -44,13 +47,14 @@ def calculateTotalMacros(data):
 def setDayAndMealMacros(data):
     # count total day macros and each meal macros
     macros = calculateTotalMacros(data)
+    print(macros)
     # set day macros
     for key in list(macros.keys())[1:]:
         data[key] = macros[key]
     # set meal macros
     count = 0
     for meal_name in macros["meals_macros"]:
-        data["logs"]["meals"][count]["meal_macros"] = macros["meals_macros"][meal_name]
+        data["logs"][count]["meal_macros"] = macros["meals_macros"][meal_name]
         count += 1
     return data
 
@@ -70,6 +74,7 @@ class MealLogSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
+        validated_data = setDayAndMealMacros(validated_data)
         return super().create(validated_data)
 
     def update(self, instance, validated_data):

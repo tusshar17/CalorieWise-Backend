@@ -16,11 +16,13 @@ class MealLogModelViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         user = request.user
-        date = request.data.get("date", None)
+        date = self.request.query_params.get("date")
         print(date)
         if date:
             meal_log = MealLog.objects.filter(user=user, date=date)
-            serializer = MealLogSerializer(meal_log, many=True)
+            if meal_log.exists():
+                meal_log = meal_log[0]
+            serializer = MealLogSerializer(meal_log)
             return Response(serializer.data)
         return Response(
             {"error": "please provide date."}, status=status.HTTP_400_BAD_REQUEST
@@ -43,6 +45,8 @@ class MealLogModelViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
     def update(self, request, *args, **kwargs):
+        print("=========req data=====")
+        print(request.data)
         if "logs" not in request.data.keys():
             return Response(
                 {"Error": "no logs found"}, status=status.HTTP_400_BAD_REQUEST
