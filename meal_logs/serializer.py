@@ -4,7 +4,7 @@ import random
 
 
 def calculteFoodItemMacros(val, serving_size, qty_used):
-    return (val / serving_size) * qty_used
+    return round((val / serving_size) * qty_used, 2)
 
 
 def calculateTotalMacros(data):
@@ -28,6 +28,12 @@ def calculateTotalMacros(data):
             "sugar_in_g": 0,
         }
         for food_item in meal["food_items"]:
+            food_item_id = (
+                meal["meal_id"].split(" ")[0]
+                + food_item["name"].split(" ")[0]
+                + str(random.randint(10, 99))
+            )
+            food_item["food_item_id"] = food_item.get("food_item_id", food_item_id)
             serving_size = food_item["serving_size_in_g"]
             qty_used = food_item["qty_used_in_g"]
 
