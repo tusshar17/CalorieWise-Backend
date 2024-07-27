@@ -13,6 +13,7 @@ from account.serializers import (
     SendOTPSerializer,
 )
 from django.contrib.auth import authenticate
+from django.shortcuts import get_object_or_404
 from account.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.throttling import AnonRateThrottle
@@ -115,6 +116,20 @@ class UserProfileView(APIView):
         serializer = UserProfileSerializer(request.user)
         print(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ProfileNameUpdateView(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request, pk):
+        instance = get_object_or_404(User, id=pk)
+        serializer = UserProfileSerializer(instance, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserChangePasswordView(APIView):

@@ -6,6 +6,7 @@ from account.views import (
     UserChangePasswordView,
     SendPasswordResetEmailView,
     UserPasswordResetView,
+    ProfileNameUpdateView,
     OTPVerification,
     SendOTP,
 )
@@ -16,6 +17,11 @@ urlpatterns = [
     path("register/", UserRegisterView.as_view(), name="UserRegister"),
     path("login/", UserLoginView.as_view(), name="UserLogin"),
     path("profile/", UserProfileView.as_view(), name="UserProfile"),
+    path(
+        "update_profile_name/<int:pk>",
+        ProfileNameUpdateView.as_view(),
+        name="ProfileNameUpdate",
+    ),
     path("change_password/", UserChangePasswordView.as_view(), name="ChangePassword"),
     path(
         "send-reset-password-email/",
