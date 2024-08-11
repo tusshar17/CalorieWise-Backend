@@ -158,16 +158,8 @@ PASSWORD_RESET_TIMEOUT = 600  # 600 Seconds = 10 Minutes
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
     "http://localhost:5173",
-    "http://127.0.0.1:3000",
     "http://127.0.0.1:5173",
-    "http://127.0.0.1:52417",
-    "http://192.168.29.181:5173",
-    "http://192.168.251.144:5173",
-    "http://3.109.47.27:80",
-    "http://3.109.47.27",
-    "http://65.2.171.212:80" "http://65.2.171.212",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True

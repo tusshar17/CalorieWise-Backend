@@ -20,8 +20,8 @@ class SendOTPSerializer(serializers.Serializer):
 
             # send email
             data = {
-                "subject": "CalorieWose | OTP for SIGN UP",
-                "body": "Here is Your OTP for SIGN UP Verification \n" + str(otp),
+                "subject": "CalorieWise | OTP for SIGN UP",
+                "body": "Here is Your OTP for Sign Up Verification \n" + str(otp),
                 "to_email": email,
             }
 
