@@ -21,10 +21,20 @@ services:
     command: ["sh", "./django.sh"]
     volumes:
       - .:/app
-    ports:
-      - "8000:8000"
+    expose:
+      - 8000
     depends_on:
       - db
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./app/static:/app/static
+    depends_on:
+      - web
 
 volumes:
   postgres_data: {}
