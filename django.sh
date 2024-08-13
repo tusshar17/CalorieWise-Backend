@@ -11,5 +11,9 @@ echo "Migrate"
 python manage.py migrate
 echo "================================================="
 
+echo "Collect Static Files"
+python manage.py collectstatic --noinput
+echo "================================================="
+
 echo "Start Server"
-python manage.py runserver 0.0.0.0:8000
+gunicorn backend.wsgi:application --config gunicorn_config.py

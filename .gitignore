@@ -8,8 +8,6 @@ db.sqlite3
 # Ignore compiled Python files
 *.pyc
 
-# Ignore settings file (if different from the default 'settings.py')
-
 # Ignore logs and other generated files
 logs/
 *.log

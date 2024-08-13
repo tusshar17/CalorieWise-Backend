@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-cuiy6qhd-u(5lyqgylmd6iqd9axqps3q^%csn$i7azhh&1yjyp"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", False)
 
 ALLOWED_HOSTS = ["*"]
 
@@ -124,7 +124,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
+STATIC_ROOT = "/static/"
 STATIC_URL = "static/"
 
 # Default primary key field type
@@ -157,14 +157,10 @@ SIMPLE_JWT = {
 PASSWORD_RESET_TIMEOUT = 600  # 600 Seconds = 10 Minutes
 
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",
-#     "http://localhost:5173",
-#     "http://127.0.0.1:3000",
-#     "http://127.0.0.1:5173",
-#     "http://127.0.0.1:52417",
-#     "http://192.168.29.181:5173",
-#     "http://192.168.251.144:5173",
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
+SECURE_SSL_REDIRECT = False
