@@ -9,7 +9,6 @@ db.sqlite3
 *.pyc
 
 # Ignore settings file (if different from the default 'settings.py')
-*/settings.py
 
 # Ignore logs and other generated files
 logs/
