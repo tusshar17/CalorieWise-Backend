@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pg-config
+data:
+  PG_USER: "postgres"
+  PG_PASSWORD: "pg6969"
+  PG_DB: "DataCalorieWiseBase"
+  PG_PORT: "5432"
+  PG_HOST: "service-cw-db"

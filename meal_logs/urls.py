@@ -8,7 +8,7 @@ router.register("", views.MealLogModelViewSet, basename="MealLogModelViewSet")
 urlpatterns = [
     path("/log/", include(router.urls)),
     path(
-        "get_macro_summary/<int:days>",
+        "/get_macro_summary/<int:days>",
         views.MacroSummary.as_view(),
         name="MacroSummary",
     ),

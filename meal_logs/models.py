@@ -5,7 +5,7 @@ from django.utils import timezone
 
 class MealLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField(default=timezone.now, unique=True)
+    date = models.DateField(default=timezone.now)
     logs = models.JSONField(null=True, blank=True, default=None)
     """
     meals: [

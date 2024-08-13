@@ -83,7 +83,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         validated_data["otp"] = Util.generate_otp()  # otp created
         # send otp
         data = {
-            "subject": "CalorieWose | OTP for SIGN UP",
+            "subject": "CalorieWise | OTP for SIGN UP",
             "body": "Here is Your OTP for SIGN UP Verification \n"
             + str(validated_data["otp"]),
             "to_email": validated_data.get("email"),

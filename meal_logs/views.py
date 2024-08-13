@@ -17,7 +17,6 @@ class MealLogModelViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         user = request.user
         date = self.request.query_params.get("date")
-        print(date)
         if date:
             meal_log = MealLog.objects.filter(user=user, date=date)
             if meal_log.exists():
@@ -29,8 +28,8 @@ class MealLogModelViewSet(viewsets.ModelViewSet):
         )
 
     def create(self, request, *args, **kwargs):
-        log = MealLog.objects.filter(
-            user=request.user, date=request.data.get("date", date.today())
+        log = MealLog.objects.filter(user=request.user).filter(
+            date=request.data.get("date", date.today())
         )
         if log.exists():
             return Response(
@@ -45,8 +44,6 @@ class MealLogModelViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
     def update(self, request, *args, **kwargs):
-        print("=========req data=====")
-        print(request.data)
         if "logs" not in request.data.keys():
             return Response(
                 {"Error": "no logs found"}, status=status.HTTP_400_BAD_REQUEST
