@@ -28,7 +28,6 @@ services:
 
   nginx:
     image: nginx:latest
-    restart: always
     ports:
       - "80:80"
     volumes:
